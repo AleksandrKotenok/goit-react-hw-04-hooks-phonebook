@@ -1,27 +1,19 @@
 import { AddForm } from "../AddForm/AddForm";
 import { Filter } from "../Filter/Filter";
 import { ContactList } from "../ContactList/ContactList";
-import React, { Component, Fragment } from "react";
+import { Fragment, useState, useEffect } from "react";
 import { nanoid } from "nanoid";
 
-class App extends Component {
-  state = {
-    contacts: [],
-    filter: "",
-  };
-  #contacts = "contacts";
-  componentDidMount() {
-    const contactsFromLs = JSON.parse(localStorage.getItem(this.#contacts));
-    if (contactsFromLs) this.setState({ contacts: contactsFromLs });
-  }
-  componentDidUpdate(prevProps, prevState) {
-    if (this.state.contacts !== prevState.contacts) {
-      localStorage.setItem(this.#contacts, JSON.stringify(this.state.contacts));
-    }
-  }
-  submit = ({ name, number }) => {
-    const existingName = this.state.contacts.find((contact) => contact.name === name);
-    if (existingName) {
+export default function App() {
+  const [filter, setFilter] = useState("");
+  const [contacts, setContacts] = useState(() => JSON.parse(window.localStorage.getItem("contacts")) ?? []);
+
+  useEffect(() => {
+    localStorage.setItem("contacts", JSON.stringify(contacts));
+  }, [contacts]);
+
+  const submit = ({ name, number }) => {
+    if (contacts.find((contact) => contact.name === name)) {
       alert(`${name} existing name`);
       return;
     }
@@ -30,35 +22,20 @@ class App extends Component {
       name,
       number,
     };
-    this.setState(({ contacts }) => ({
-      contacts: [newRecord, ...contacts],
-    }));
+    setContacts([newRecord, ...contacts]);
   };
-  filterContacts = () => {
-    return this.state.contacts.filter((contact) => contact.name.toLowerCase().includes(this.state.filter.toLowerCase()));
-  };
-  deleteContact = (contactId) => {
-    this.setState((prevState) => ({
-      contacts: prevState.contacts.filter((contact) => contact.id !== contactId),
-    }));
-  };
-  filterChange = (e) => {
-    this.setState({
-      filter: e.currentTarget.value,
-    });
-  };
+  const filterContacts = () => contacts.filter((contact) => contact.name.toLowerCase().includes(filter.toLowerCase()));
+  const deleteContact = (contactId) => setContacts(contacts.filter((contact) => contact.id !== contactId));
+  const filterChange = (e) => setFilter(e.currentTarget.value);
 
-  render() {
-    const filteredContacts = this.filterContacts();
-    return (
-      <Fragment>
-        <h1>Phonebook</h1>
-        <AddForm submit={this.submit} />
-        <h2>Contacts</h2>
-        <Filter filter={this.state.filter} input={this.filterChange} />
-        <ContactList contacts={filteredContacts} deleteContact={this.deleteContact} />
-      </Fragment>
-    );
-  }
+  const filteredContacts = filterContacts();
+  return (
+    <Fragment>
+      <h1>Phonebook</h1>
+      <AddForm submit={submit} />
+      <h2>Contacts</h2>
+      <Filter filter={filter} input={filterChange} />
+      <ContactList contacts={filteredContacts} deleteContact={deleteContact} />
+    </Fragment>
+  );
 }
-export default App;

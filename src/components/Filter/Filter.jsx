@@ -1,5 +1,5 @@
-import PropTypes from 'prop-types';
-import s from '../Filter/Filter.module.css';
+import PropTypes from "prop-types";
+import s from "../Filter/Filter.module.css";
 
 export const Filter = ({ filter, input }) => {
   return (

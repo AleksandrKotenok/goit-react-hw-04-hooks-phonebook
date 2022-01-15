@@ -4,8 +4,11 @@ import s from "../Filter/Filter.module.css";
 export const Filter = ({ filter, input }) => {
   return (
     <form className={s.form}>
-      <label className={s.label}>Find contact by name: </label>
+      <label className={s.label} htmlFor={"filter"}>
+        Find contact by name:
+      </label>
       <input
+        id={"filter"}
         className={s.input}
         type="text"
         name="filter"

@@ -5,11 +5,11 @@ export const ContactList = ({ contacts, deleteContact }) => {
   return (
     <section className={s.contactList}>
       <ul className={s.list}>
-        {contacts.map((data) => (
-          <li className={s.item} key={data.id}>
-            <p className={s.name}>{data.name}:</p>
-            <p className={s.number}>{data.number}</p>
-            <button className={s.button} type="button" onClick={() => deleteContact(data.id)}>
+        {contacts.map((contact) => (
+          <li className={s.item} key={contact.id}>
+            <p className={s.name}>{contact.name}:</p>
+            <p className={s.number}>{contact.number}</p>
+            <button className={s.button} type="button" onClick={() => deleteContact(contact.id)}>
               Delete
             </button>
           </li>

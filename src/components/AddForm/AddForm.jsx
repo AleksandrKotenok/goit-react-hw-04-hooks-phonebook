@@ -15,8 +15,11 @@ export const AddForm = ({ submit }) => {
   return (
     <section className={s.addForm}>
       <form className={s.form} onSubmit={onSubmit}>
-        <label className={s.label}>Name:</label>
+        <label className={s.label} htmlFor={"name"}>
+          Name:
+        </label>
         <input
+          id={"name"}
           className={s.input}
           type="text"
           name="name"
@@ -26,8 +29,11 @@ export const AddForm = ({ submit }) => {
           required
           onChange={inputChange}
         />
-        <label className={s.label}>Tel:</label>
+        <label className={s.label} htmlFor={"tel"}>
+          Tel:
+        </label>
         <input
+          id={"tel"}
           className={s.input}
           type="tel"
           name="number"
